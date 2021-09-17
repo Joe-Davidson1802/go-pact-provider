@@ -23,6 +23,7 @@ func startServer() (port int) {
 	}
 	port = listener.Addr().(*net.TCPAddr).Port
 	go func() {
+		fmt.Printf("\nStarting patc server on port %d\n", port)
 		panic(http.Serve(listener, handler))
 	}()
 	return
@@ -35,7 +36,7 @@ func TestProvider(t *testing.T) {
 	port := startServer()
 	_, err := pact.VerifyProvider(t, types.VerifyRequest{
 		ProviderBaseURL:            fmt.Sprintf("http://localhost:%d", port),
-		PactURLs:                   []string{pactbroker},
+		BrokerURL:                  pactbroker,
 		PublishVerificationResults: true,
 		ProviderVersion:            version,
 	})
